@@ -25,9 +25,9 @@ def create_promissory_note(data, output_docx):
 
 # Example usage
 promissory_data = {
-    "4. PREPAYMENT": "The Borrower has the right to pay back the loan in-full or make additional payments at any time without penalty.",
+    "4. PREPAYMENT": "The Borrower has the right to pay back the loan in-full or make additional payments at any time without penalty." + json_data + "f  .",
     "5. REMEDIES": "No delay or omission on part of the holder of this Note in exercising any right hereunder shall operate as a waiver of any such right or of any other right of such holder, nor shall any delay, omission or waiver on any one occasion be deemed a bar to or waiver of the same or any other right on any future occasion. The rights and remedies of the Lender shall be cumulative and may be pursued singly, successively, or together, in the sole discretion of the Lender.",
-    "6. EVENTS OF ACCELERATION": "The occurrence of any of the following shall constitute an 'Event of Acceleration' by the Lender under this Note:\n\nBorrower’s failure to pay any part of the principal or interest as and when due under this Note; or\nBorrower’s becoming insolvent or not paying its debts as they become due.",
+    "6. EVENTS OF ACCELERATION": "The occurrence of any of the following shall constitute an 'Event of Acceleration' by the Lender under this Note:\n\nBorrower’s failure to pay any part of the principal or interest as and when due under this Note; or\nBorrower’sbecoming insolvent or not paying its debts as they become due.",
     # Add other sections as needed
 }
 
