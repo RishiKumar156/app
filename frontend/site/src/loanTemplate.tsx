@@ -1,49 +1,50 @@
-import React, { useEffect } from 'react';
-import * as fs from 'fs';
-import * as Docxtemplater from 'docxtemplater';
+import React, { useState } from 'react';
+import mammoth from 'mammoth';
 
-const LoanAgreementTemplate = () => {
-  useEffect(() => {
-    // Load the Word document template
-    const templatePath = 'C:/Users/Rishik%20kumar/Downloads/loanAgreementTemplate.docx';
-    const content = fs.readFileSync(templatePath, 'binary');
+const JsonToWordConverter = () => {
+  const [jsonContent, setJsonContent] = useState({
+    Title: 'Document Title',
+    Content: 'This is some content.',
+    Author: 'John Doe',
+    Date: '2023-01-01',
+    Sections: {
+      Section1: 'Content of Section 1',
+      Section2: 'Content of Section 2',
+    },
+  });
 
-    // Sample data for the loan agreement
-    const data = {
-      loanAmount: 'TWO-THOUSAND',
-      borrowerName: 'John Doe',
-      borrowerAddress: '123 Main St, City',
-      lenderName: 'Lender Inc.',
-      lenderAddress: '456 Oak St, Town',
-      startDate: '01/01/2023',
-      dueDate: '12/31/2023',
-      weeklyPayment: '$50.00',
-      monthlyPayment: '$200.00',
-      lumpSumAmount: '$2,000.00',
-      interestRate: '5%', // Customize as needed
+  const convertToJson = () => {
+    const htmlContent = Object.entries(jsonContent)
+      .map(([key, value]) => `<h1>${key}</h1><p>${value}</p>`)
+      .join('');
+
+    const options = {
+      styleMap: [
+        "p[style-name='Heading 1'] => h1:fresh",
+        "p[style-name='Heading 2'] => h2:fresh",
+        // Add more style mappings as needed
+      ],
     };
 
-    // Create a new Docxtemplater instance
-    const doc = new Docxtemplater();
-    doc.load(content);
+    mammoth.extractRawText({ value: htmlContent }, options)
+      .then(({ value }) => {
+        const blob = new Blob([value], { type: 'application/msword' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'output.docx';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch(error => console.error('Error converting to Word:', error));
+  };
 
-    // Set the data in the template
-    doc.setData(data);
-
-    // Perform the templating process
-    doc.render();
-
-    // Get the output as a buffer
-    const buffer = doc.getZip().generate({ type: 'nodebuffer' });
-
-    // Save or display the generated Word document as needed
-    // For example, you can use file-saver to save the document
-    // or create a download link for the user
-
-    // Note: In a real application, you might want to save the buffer to a file or upload it to a server.
-  }, []);
-
-  return <div>Generating Loan Agreement document...</div>;
+  return (
+    <div>
+      <h2>JSON to Word Converter</h2>
+      <button onClick={convertToJson}>Convert to Word</button>
+    </div>
+  );
 };
 
-export default LoanAgreementTemplate;
+export default JsonToWordConverter;

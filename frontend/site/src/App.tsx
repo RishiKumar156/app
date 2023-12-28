@@ -1,9 +1,9 @@
-import LoanAgreementTemplate from "./loanTemplate";
+import JsonToWordConverter from "./loanTemplate";
 
 export default function App() {
   return (
     <>
-    <LoanAgreementTemplate />
+    <JsonToWordConverter />
     <div className="text-center font-semibold text-[1rem]" >App</div>
     </>
   )
